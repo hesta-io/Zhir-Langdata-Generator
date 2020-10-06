@@ -4,6 +4,10 @@
     "start": {
       "cmd": "deno run --allow-read --allow-write --unstable --allow-env app.js ",
       "desc": "run my app.ts file"
+    },
+    "play": {
+      "cmd": "deno run --allow-read --allow-write --unstable --allow-env playground.js ",
+      "desc": "run my playground.ts file"
     }
   }
 }
