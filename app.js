@@ -43,21 +43,22 @@ await Deno.writeTextFile("./data/out/corpse.unigram_freqs", unigramFreqString);
 console.log("unigram frequencies saved out/corpse.unigram_freqs 🕒");
 /* --------------------------------------- */
 
-/* Generate Wordlist */
-console.log("Generating wordlist 🕒");
-const words = fixed.trim().replace( /\n+/g, " " ).split(" ");
-const uniqWords = _.uniq(words);
-let wordlistStr = uniqWords.join("\n");
-await Deno.writeTextFile("./data/out/corpse.wordlist", wordlistStr);
-console.log("Wordlist saved ./data/out/corpse.wordlist 🕒");
-/* --------------------------------------- */
 
 /* Genrate Biagrams */
 console.log("Generating biagram frequencies 🕒");
+const words = fixed.trim().replace( /\n+/g, " " ).split(" ");
+
+const wordFreqObject = {}; // used to create wordlist
 const bigramFreqObject = {};
 words.forEach((word)=>{
+    if(!wordFreqObject[word]){
+        wordFreqObject[word] = 1;
+    }else {
+        wordFreqObject[word] += 1;
+    }
     const bigrams = nGram.bigram(word);
     bigrams.forEach((term)=>{
+        
         if(!bigramFreqObject[term]){
             bigramFreqObject[term] = 1;
         }else{
@@ -84,6 +85,26 @@ sortedbigramFreqArray.forEach((r)=>{
 await Deno.writeTextFile("./data/out/corpse.bigram_freqs", bigramFreqString);
 console.log("biagram frequencies saved out/corpse.bigram_freqs 🕒");
 
+/* --------------------------------------- */
+
+
+/* Generate Wordlist */
+console.log("Generating wordlist 🕒");
+
+const wordFreqArray = [];
+for (let key in wordFreqObject) {
+    // deno-lint-ignore no-prototype-builtins
+    if (wordFreqObject.hasOwnProperty(key)) {
+        wordFreqArray.push({
+            term: key,
+            freq: wordFreqObject[key],
+        })
+    }
+}
+const sortedWordFreqArray = _.orderBy(wordFreqArray, ['freq'],['desc']);
+let wordlistStr = sortedWordFreqArray.map(o=> o.term).join("\n");
+await Deno.writeTextFile("./data/out/corpse.wordlist", wordlistStr);
+console.log("Wordlist saved ./data/out/corpse.wordlist 🕒");
 /* --------------------------------------- */
 
 console.log("All Done ✔️");
