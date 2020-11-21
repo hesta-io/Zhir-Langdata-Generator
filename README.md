@@ -1,6 +1,5 @@
 # langdata-generator
 
 ```
-deno run --allow-read --allow-write .\app.ts
+deno run --allow-read --allow-write .\app.js
 ```
-

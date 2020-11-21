@@ -1,7 +1,7 @@
 import _ from 'https://jspm.dev/lodash@4';
 import nGram from 'https://jspm.dev/n-gram@1.1.2    ';
-const inputFile = "./data/in/corpse.txt";
-const outputFile = "./data/out/corpse.txt";
+const inputFile = "./data/in/corpus.txt";
+const outputFile = "./data/out/corpus.txt";
 
 
 /* Fix line widths in words */
@@ -9,7 +9,7 @@ console.log("Fixing Word Lengths 🕒");
 let inputText = await Deno.readTextFile(inputFile);
 const fixed = fixLineLength(inputText);
 await Deno.writeTextFile(outputFile, fixed);
-console.log("Sentence length fixed ./data/out/corpse.txt ✔️");
+console.log("Sentence length fixed ./data/out/corpus.txt ✔️");
 /* --------------------------------------- */
 
 /* Generating unigram frequnecies */
@@ -39,8 +39,8 @@ const sortedUnigramFreqArray = _.orderBy(unigramFreqArray, ['freq'],['desc']);
 sortedUnigramFreqArray.forEach((r)=>{
     unigramFreqString+= `${r.char} ${r.freq}\n`
 })
-await Deno.writeTextFile("./data/out/corpse.unigram_freqs", unigramFreqString);
-console.log("unigram frequencies saved out/corpse.unigram_freqs 🕒");
+await Deno.writeTextFile("./data/out/corpus.unigram_freqs", unigramFreqString);
+console.log("unigram frequencies saved out/corpus.unigram_freqs 🕒");
 /* --------------------------------------- */
 
 
@@ -82,8 +82,8 @@ let bigramFreqString = "";
 sortedbigramFreqArray.forEach((r)=>{
     bigramFreqString+= `${r.term} ${r.freq}\n`
 })
-await Deno.writeTextFile("./data/out/corpse.bigram_freqs", bigramFreqString);
-console.log("biagram frequencies saved out/corpse.bigram_freqs 🕒");
+await Deno.writeTextFile("./data/out/corpus.bigram_freqs", bigramFreqString);
+console.log("biagram frequencies saved out/corpus.bigram_freqs 🕒");
 
 /* --------------------------------------- */
 
@@ -102,9 +102,9 @@ for (let key in wordFreqObject) {
     }
 }
 const sortedWordFreqArray = _.orderBy(wordFreqArray, ['freq'],['desc']);
-let wordlistStr = sortedWordFreqArray.map(o=> o.term).join("\n");
-await Deno.writeTextFile("./data/out/corpse.wordlist", wordlistStr);
-console.log("Wordlist saved ./data/out/corpse.wordlist 🕒");
+let wordlistStr = sortedWordFreqArray.map(o=> o.term).filter(o => o.length >= 2).join("\n");
+await Deno.writeTextFile("./data/out/corpus.wordlist", wordlistStr);
+console.log("Wordlist saved ./data/out/corpus.wordlist 🕒");
 /* --------------------------------------- */
 
 console.log("All Done ✔️");
@@ -112,7 +112,7 @@ console.log("All Done ✔️");
 function fixLineLength(input){
     const words =  input.trim().replaceAll( /\n/g, " " ).replaceAll( / +/g, " " ).split(" ");
     let appendedWords =0;
-    let maxSentenceInWords = 10;
+    let maxSentenceInWords = 20;
     let fixed = "";
     let sentenceArray = [];
     words.forEach((word)=>{
@@ -123,7 +123,7 @@ function fixLineLength(input){
         }else{
             fixed += sentenceArray.join(" ")+"\n";
             appendedWords = 0;
-            maxSentenceInWords = randomIntFromInterval(7,15);
+            maxSentenceInWords = randomIntFromInterval(20,30);
             sentenceArray = [];
         }
     });
