@@ -1,7 +1,7 @@
 import _ from 'https://jspm.dev/lodash@4';
 import nGram from 'https://jspm.dev/n-gram@1.1.2    ';
-const inputFile = "./data/in/corpus_new.txt";
-const outputFile = "./data/out/corpus_new.txt";
+const inputFile = "./data/in/allekok-poems.txt";
+const outputFile = "./data/out/corpus.txt";
 
 
 /* Fix line widths in words */
