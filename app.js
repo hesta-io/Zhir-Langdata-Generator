@@ -1,6 +1,6 @@
 import _ from 'https://jspm.dev/lodash@4';
 import nGram from 'https://jspm.dev/n-gram@1.1.2    ';
-const inputFile = "./data/in/allekok-poems.txt";
+const inputFile = "./data/in/corpus_new_cleaned.txt";
 const outputFile = "./data/out/corpus.txt";
 
 
